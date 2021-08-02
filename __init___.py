@@ -12,13 +12,14 @@ def ouvir_microfone():
         microfone.adjust_for_ambient_noise(source)
         print("Diga alguma coisa: ")    
         audio = microfone.listen(source)    
-
+    
     try:
         frase = microfone.recognize_google(audio,language='pt-BR')
         print("Você disse: " + frase)
+        return frase
     except :
         print("Não entendi")
-    return frase
+        ouvir_microfone()
 def pesquisaGoogle(audio):
     chrome_option = Options()
     chrome_option.headless = True
