@@ -31,12 +31,22 @@ def pesquisaGoogle(audio):
     pesquisa.send_keys(Keys.RETURN)
     time.sleep(5)
     teste = ''
+    local_pesquisa = False
     pesquisa = chrome.find_elements_by_tag_name('h3')
-    for c in range(0,len(pesquisa)):
+    for c in range(len(pesquisa)):
         if 'Descri' in pesquisa[c].text:
             teste = pesquisa[c].find_element_by_xpath('..')
-            teste = teste.find_element_by_tag_name('span')
-    return teste.text
+            teste = teste.find_element_by_tag_name('span').text
+        else:
+            local_pesquisa = True
+    if local_pesquisa:
+        pesquisa = chrome.find_elements_by_tag_name('h2')
+        teste = pesquisa[0].find_element_by_xpath('..')
+        teste = teste.find_element_by_tag_name('span').text
+        if 'clima' in pesquisa[0].text:
+            teste += "°C"
+    print(teste)
+    return teste
 
 
 
