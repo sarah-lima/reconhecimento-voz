@@ -34,9 +34,9 @@ def pesquisaGoogle(audio):
     local_pesquisa = False
     pesquisa = chrome.find_elements_by_tag_name('h3')
     for c in range(len(pesquisa)):
+        # google descrição
         if 'Descri' in pesquisa[c].text:
             local_pesquisa = False
-
             teste = pesquisa[c].find_element_by_xpath('..')
             teste = teste.find_element_by_tag_name('span').text
         else:
@@ -44,11 +44,16 @@ def pesquisaGoogle(audio):
     if local_pesquisa:
         pesquisa = chrome.find_elements_by_tag_name('h2')
         teste = pesquisa[0].find_element_by_xpath('..')
-        if 'blog' in teste.find_element_by_tag_name('span').text:
+        # google link
+        if '› ' in teste.find_element_by_tag_name('span').text:
             teste = teste.text
+        # google clima
         elif 'clima' in pesquisa[0].text:
             teste += "°C"
-
+        # google tradutor
+        elif 'Inglês' in teste.find_element_by_tag_name('span').text:
+            teste = teste.find_element_by_id('tw-target-text-container').text
+        # google descrição
         else:
            teste = teste.find_element_by_tag_name('span').text
     return teste
@@ -64,5 +69,5 @@ def cria_audio(audio):
     playsound('hello.mp3')
 
 frase = ouvir_microfone()
-resultado = pesquisaGoogle("m2 de São Paulo")
+resultado = pesquisaGoogle(frase)
 cria_audio(resultado)
