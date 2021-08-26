@@ -12,11 +12,10 @@ def ouvir_microfone():
         microfone.adjust_for_ambient_noise(source)
         print("Diga alguma coisa: ")    
         audio = microfone.listen(source)    
-    
     try:
         frase = microfone.recognize_google(audio,language='pt-BR')
         print("Você disse: " + frase)
-        return frase
+        return pesquisaGoogle(frase)
     except :
         print("Não entendi")
         ouvir_microfone()
@@ -39,6 +38,9 @@ def pesquisaGoogle(audio):
             local_pesquisa = False
             teste = pesquisa[c].find_element_by_xpath('..')
             teste = teste.find_element_by_tag_name('span').text
+        # elif 'As pessoas também perguntam' in pesquisa[c].text:
+        #     local_pesquisa = False
+
         else:
             local_pesquisa = True
     if local_pesquisa:
@@ -49,6 +51,7 @@ def pesquisaGoogle(audio):
             teste = teste.text
         # google clima
         elif 'clima' in pesquisa[0].text:
+            teste = teste.text
             teste += "°C"
         # google tradutor
         elif 'Inglês' in teste.find_element_by_tag_name('span').text:
@@ -56,7 +59,7 @@ def pesquisaGoogle(audio):
         # google descrição
         else:
            teste = teste.find_element_by_tag_name('span').text
-    return teste
+    cria_audio(teste)
 
 
 
@@ -68,6 +71,4 @@ def cria_audio(audio):
 
     playsound('hello.mp3')
 
-frase = ouvir_microfone()
-resultado = pesquisaGoogle(frase)
-cria_audio(resultado)
+ouvir_microfone()
